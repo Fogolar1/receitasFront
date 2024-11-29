@@ -7,7 +7,13 @@
 
 // Composables
 import { createRouter, createWebHistory } from 'vue-router/auto'
-import { routes } from 'vue-router/auto-routes'
+import Receitas from "../pages/Receitas.vue"
+import Ingredientes from "../pages/Ingredientes.vue"
+
+const routes = [
+  { path : "/receitas", component: Receitas},
+  { path : "/ingredientes", component: Ingredientes}
+]
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
