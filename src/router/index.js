@@ -9,10 +9,12 @@
 import { createRouter, createWebHistory } from 'vue-router/auto'
 import Receitas from "../pages/Receitas.vue"
 import Ingredientes from "../pages/Ingredientes.vue"
+import IngredienteCadastro from '@/pages/IngredienteCadastro.vue'
 
 const routes = [
   { path : "/receitas", component: Receitas},
-  { path : "/ingredientes", component: Ingredientes}
+  { path : "/ingredientes", component: Ingredientes},
+  { path : "/ingredientes/cadastro", component: IngredienteCadastro, name: "cadastroIngredientes", props : true }
 ]
 
 const router = createRouter({
