@@ -1,21 +1,42 @@
 <template>
+  <NavbarReceitas />
   <div class="d-flex justify-center ma-5">
       <h1>Lista de Receitas</h1>
   </div> 
+  <div class="d-flex justify-center ma-5">
+        <v-btn class="me-4" type="submit" @click="redirectCadastro()">Nova Receita</v-btn>
+    </div>
   <div class="three-elements-per-row">
-      <div v-for="receita in receitas" :key="receita.id" class="border-md d-flex justify-center" style="width: 70%;" :class="[receita.available ? 'available' : 'unavailable']">
+      <div 
+        v-for="receita in receitas" 
+        :key="receita.id" 
+        class="border-md d-flex justify-center" 
+        style="width: 70%; cursor: pointer;" 
+        :class="[receita.available ? 'available' : 'unavailable']"
+        @click="redirectCadastro(receita.id)">
           <h2 class="pa-1">{{ receita.nome }}</h2>
       </div>
   </div>
 </template>
 
 <script>
+import NavbarReceitas from './NavbarReceitas.vue';
+
   export default {
       data() {
           return {
               receitas : [ { nome: "Pizza de siri", available: true, id : 1 }, { nome: "Hamburguer de banana", available: true, id : 2 }, { nome: "Macarrão com abacate", available: false, id : 2 },  { nome: "Doritos caseiro", available: false, id : 2 }]
           }
-      }
+      },
+      components : { NavbarReceitas },
+      methods: {
+        redirectCadastro(id) {
+            this.$router.push({
+                name: "cadastroReceitas",
+                params : { id: this.id }
+            })
+        } 
+    }
   }
 </script>
 

@@ -1,20 +1,20 @@
 <template>
     <NavbarReceitas />
     <div class="d-flex justify-center ma-5">
-        <h1>Cadastro de ingrediente</h1>
+        <h1>Cadastro de receita</h1>
     </div>
     <div class="d-flex justify-center">
         <form @submit.prevent="submit" style="width: 40%;">
             <v-text-field 
-                v-model="ingrediente.nome"
-                label="Nome do ingrediente"
+                v-model="receita.nome"
+                label="Nome da receita"
                 :rules="[v => !!v || 'Nome é obrigatório']"
             ></v-text-field>
-            <v-text-field
-                v-model="ingrediente.quantidade"
-                label="Quantidade do ingrediente"
-                :rules="regraQuantidade"
-            ></v-text-field>
+            <v-textarea
+                v-model="receita.procedimento"
+                label="Procedimento"
+                :rules="[v => !!v || 'Procedimento é obrigatório']"
+            ></v-textarea>
             <div class="d-flex justify-center">
                 <v-btn
                 type="submit"
@@ -26,7 +26,6 @@
     </div>
 </template>
 
-
 <script>
     import NavbarReceitas from './NavbarReceitas.vue';
 
@@ -34,14 +33,9 @@
         props : ['id'],
         data() {
             return{
-                ingrediente: { nome: '', quantidade : ''},
-                regraQuantidade : [
-                    v => !!v || 'Quantidade é obrigatória',
-                    v => /^\d+$/.test(v) || "Quantidade deve ser um número"
-                ]
+                receita: { nome: '', procedimento : '', ingredientes : {}},
             }
         },
-        components : { NavbarReceitas }
+        components: {NavbarReceitas}
     }
-
 </script>
