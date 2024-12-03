@@ -15,9 +15,15 @@
                 label="Quantidade do ingrediente"
                 :rules="regraQuantidade"
             ></v-text-field>
+            <v-select
+                v-model="ingrediente.unidade"
+                :items="this.unidades"
+                label="Unidade"
+            ></v-select>
             <div class="d-flex justify-center">
                 <v-btn
                 type="submit"
+                @click="enviar()"
                 >
                     Enviar
                 </v-btn>
@@ -29,19 +35,49 @@
 
 <script>
     import NavbarReceitas from './NavbarReceitas.vue';
+    import axios from 'axios';
+    import { useRoute } from 'vue-router'
 
     export default {
-        props : ['id'],
         data() {
             return{
-                ingrediente: { nome: '', quantidade : ''},
+                ingrediente: { nome: '', quantidade : '', unidade : '', id : undefined},
                 regraQuantidade : [
                     v => !!v || 'Quantidade é obrigatória',
                     v => /^\d+$/.test(v) || "Quantidade deve ser um número"
-                ]
+                ],
+                unidades : []
             }
         },
-        components : { NavbarReceitas }
+        components : { NavbarReceitas },
+        mounted(){
+            axios({
+                    method: "get",
+                    url : "http://localhost:8080/ingrediente/unidades"
+                }).then(response => {
+                    this.unidades = response.data;
+                })
+            
+            const route = useRoute();
+            if(route.query.id) {
+                axios({
+                    method: "get",
+                    url : "http://localhost:8080/ingrediente/" + route.query.id
+                }).then(response => {
+                    this.ingrediente = response.data;
+                })
+            }
+        },
+        methods: {
+            enviar(){
+                axios.post("http://localhost:8080/ingrediente/save", this.ingrediente)
+                .then(response => {
+                    this.$router.push({
+                       path : '/ingredientes'
+                    })
+                })
+            }
+        }
     }
 
 </script>

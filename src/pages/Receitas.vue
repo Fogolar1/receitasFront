@@ -20,12 +20,13 @@
 </template>
 
 <script>
+import axios from 'axios';
 import NavbarReceitas from './NavbarReceitas.vue';
 
   export default {
       data() {
           return {
-              receitas : [ { nome: "Pizza de siri", available: true, id : 1 }, { nome: "Hamburguer de banana", available: true, id : 2 }, { nome: "Macarrão com abacate", available: false, id : 2 },  { nome: "Doritos caseiro", available: false, id : 2 }]
+              receitas : []
           }
       },
       components : { NavbarReceitas },
@@ -33,9 +34,17 @@ import NavbarReceitas from './NavbarReceitas.vue';
         redirectCadastro(id) {
             this.$router.push({
                 name: "cadastroReceitas",
-                params : { id: this.id }
+                query : { id: id }
             })
         } 
+    }, 
+    mounted() { 
+      axios({
+            method: "get",
+            url : "http://localhost:8080/receita/list"
+        }).then(response => {
+            this.receitas = response.data;
+        })
     }
   }
 </script>

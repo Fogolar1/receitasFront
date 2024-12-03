@@ -11,9 +11,10 @@ import Receitas from "../pages/Receitas.vue"
 import Ingredientes from "../pages/Ingredientes.vue"
 import IngredienteCadastro from '@/pages/IngredienteCadastro.vue'
 import ReceitaCadastro from '@/pages/ReceitaCadastro.vue'
-import { components } from 'vuetify/dist/vuetify.js'
+import Home from '@/pages/Home.vue'
 
 const routes = [
+  {path : "/", component: Home},
   { path : "/receitas", component: Receitas},
   { path : "/ingredientes", component: Ingredientes},
   { path : "/ingredientes/cadastro", component: IngredienteCadastro, name: "cadastroIngredientes", props : true },
