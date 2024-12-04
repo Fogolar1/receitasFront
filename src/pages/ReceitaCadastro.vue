@@ -56,8 +56,23 @@
                 <v-btn
                 type="submit"
                 @click="enviar()"
+                class="ma-5"
                 >
                     Enviar
+                </v-btn>
+                <v-btn
+                @click="deletar()"
+                class="ma-5"
+                v-if="this.receita.id"
+                >
+                    Deletar Receita
+                </v-btn>
+                <v-btn
+                @click="fazerReceita()"
+                class="ma-5"
+                v-if="this.receita.id"
+                >
+                    Fazer Receita
                 </v-btn>
             </div>
         </form>
@@ -79,28 +94,35 @@
         },
         components: {NavbarReceitas},
         mounted(){
-            axios({
+            this.setup();
+        },
+        methods : {
+            setup(id){
+                axios({
                     method: "get",
                     url : "http://localhost:8080/ingrediente/list"
                 }).then(response => {
                     this.ingredientes = response.data;
                 })
 
-            const route = useRoute();
-            if(route.query.id) {
-                axios({
-                    method: "get",
-                    url : "http://localhost:8080/receita/" + route.query.id
-                }).then(response => {
-                    this.receita = response.data;
-                    console.log(response.data.ingredientes.length)
-                    for(let i = 0; i < response.data.ingredientes.length; i++){
-                        this.possuiIngrediente(response.data.ingredientes[i]);
-                    }
-                })
-            }
-        },
-        methods : {
+                if(!id){
+                    const route = useRoute();
+                    id = route.query.id
+                }
+                     
+                if(id) {
+                    axios({
+                        method: "get",
+                        url : "http://localhost:8080/receita/" + id
+                    }).then(response => {
+                        this.receita = response.data;
+                        console.log(response.data.ingredientes.length)
+                        for(let i = 0; i < response.data.ingredientes.length; i++){
+                            this.possuiIngrediente(response.data.ingredientes[i]);
+                        }
+                    })
+                }
+            },
             adicionarIngrediente(){
                 this.receita.ingredientes.push({ nome : ''});
             },
@@ -129,9 +151,8 @@
                     }
                 }
 
-
                 axios.post("http://localhost:8080/receita/save", this.receita)
-                .then(response => {
+                .then(() => {
                     this.$router.push({
                         path : '/receitas'
                     })
@@ -154,6 +175,33 @@
 
                 ingredienteReceita.possui = true;
                 return;
+            },
+            deletar(){
+                if(confirm("Deletar Receita? (Essa ação não pode ser revertida)"))
+                axios.delete("http://localhost:8080/receita/" + this.receita.id)
+                .then(() => {
+                    this.$router.push({
+                        path : '/receitas'
+                    })
+                });
+            },
+            fazerReceita(){
+                for(let i = 0; i < this.receita.ingredientes.length; i++){
+                    if(!this.receita.ingredientes[i].possui){
+                        alert("Não é possível fazer a receita (Ingredientes insuficientes)");
+                        return;
+                    }
+                }
+                if(confirm("Deseja fazer a receita? (As quantidades de ingrediente serão diminúidas)")){
+                    axios.post("http://localhost:8080/receita/fazer/" + this.receita.id)
+                    .then(() => {
+                        alert("Receita feita com sucesso");
+                        this.setup(this.receita.id);
+                    })
+                    .catch(function(error){
+                        alert(error.message);
+                    })
+                }
             }
         }
     }
