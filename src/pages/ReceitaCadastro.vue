@@ -110,6 +110,26 @@
                 this.receita.ingredientes.pop();
             },
             enviar(){
+                if(this.receita.nome === ''){
+                    alert("Nome deve ser preenchido");
+                    return;
+                }
+                if(this.receita.procedimento === ''){
+                    alert("Procedimento deve ser preenchido");
+                    return;
+                }
+                for(let i = 0; i < this.receita.ingredientes.length; i++){
+                    if(!this.receita.ingredientes[i].ingredienteId){
+                        alert("Ingrediente " + i + 1 + " deve ser preenchido");
+                        return;
+                    }
+                    if(!this.receita.ingredientes[i].quantidade){
+                        alert("Quantidade do ingrediente " + i + 1 + " deve ser preenchida");
+                        return;
+                    }
+                }
+
+
                 axios.post("http://localhost:8080/receita/save", this.receita)
                 .then(response => {
                     this.$router.push({

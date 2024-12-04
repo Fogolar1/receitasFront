@@ -70,6 +70,20 @@
         },
         methods: {
             enviar(){
+
+                if(this.ingrediente.nome === ''){
+                    alert("Nome deve ser preenchido");
+                    return;
+                }
+                if(this.ingrediente.quantidade === ''){
+                    alert("Quantidade deve ser preenchida");
+                    return;
+                }
+                if(this.ingrediente.unidade === ''){
+                    alert("Unidade deve ser preenchida");
+                    return;
+                }
+                    
                 axios.post("http://localhost:8080/ingrediente/save", this.ingrediente)
                 .then(response => {
                     this.$router.push({
