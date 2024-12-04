@@ -6,8 +6,8 @@
     <div class="d-flex justify-center ma-5">
         <v-btn class="me-4" type="submit" @click="redirectCadastro()">Novo Ingrediente</v-btn>
     </div>
-    <div class="three-elements-per-row">
-        <div v-for="ingrediente in ingredientes" :key="ingrediente.id" class="border-md" style="width: 30%; cursor: pointer;" @click="redirectCadastro(ingrediente.id)">
+    <div class="elements-per-row">
+        <div v-for="ingrediente in ingredientes" :key="ingrediente.id" class="border-md" style="width: 80%; cursor: pointer;" @click="redirectCadastro(ingrediente.id)">
             <h2 class="pa-1">{{ ingrediente.nome }}</h2>
             <div class="position-relative d-flex justify-end pa-1">
                 <h4>Quantidade : {{ ingrediente.quantidade }}{{ ingrediente.unidade }}</h4>
@@ -47,9 +47,9 @@ export default {
 </script>
 
 <style scoped>
-    .three-elements-per-row {
+    .elements-per-row {
         display: grid;
-        grid-template-columns: repeat(3, 1fr);
+        grid-template-columns: repeat(6, 1fr);
         place-items: center;
         gap : 10px
     }
